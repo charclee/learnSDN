@@ -9,9 +9,12 @@ class L2Switch(app_manager.RyuApp):
         super(L2Switch, self).__init__(*args, **kwargs)
 
     @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
+    #decorator  declare an event handler
+    #the first parameter is an event which ryu wants to receive
+
     def packet_in_handler(self, ev):
-        msg = ev.msg
-        datapath = msg.datapath
+        msg = ev.msg     # ev = PacketIn'data structure  msg = openflow message
+        datapath = msg.datapath    #dp=switch'id
         ofp = datapath.ofproto
         ofp_parser = datapath.ofproto_parser
  
@@ -24,3 +27,5 @@ class L2Switch(app_manager.RyuApp):
             actions=actions)
 
         datapath.send_msg(out)
+
+    # self.logger.info("switch is %s,buffer_id is %s,in_port is %s.",dp.id,msg.buffer_id,msg.in_port)
